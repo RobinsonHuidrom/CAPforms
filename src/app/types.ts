@@ -27,3 +27,9 @@ export interface FormConfig {
   formId: number;
   steps: FormStepConfig[];
 }
+
+export interface FilteredOption {
+  label?: string;
+  input: string;
+  children?: Record<string, any>;
+}

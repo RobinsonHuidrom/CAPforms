@@ -2,7 +2,7 @@ import React, { useState, useMemo } from 'react';
 import { FieldArray, Field, Formik, Form } from 'formik';
 import * as Yup from 'yup';
 import FormPreview from './FormPreview';
-import { FormConfig, FormControl, FormOption } from '../types';
+import { FormConfig, FormControl, FormOption, FilteredOption } from '../types';
 
 interface DynamicFormProps {
   formConfig: FormConfig;
@@ -106,7 +106,7 @@ const DynamicForm: React.FC<DynamicFormProps> = ({ formConfig }) => {
             .map((option: any, index: number) => {
               const optionConfig = control.options?.[index];
               if (option.checked || option.isChecked || option.selected || option.inputText || option.input) {
-                const filteredOption = {
+                const filteredOption: FilteredOption = {
                   label: optionConfig?.label,
                   input: option.input || option.inputText || '',
                 };
