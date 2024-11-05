@@ -24,6 +24,38 @@ const TextInput: React.FC<TextInputProps> = ({ name, placeholder, disabled }) =>
   />
 );
 
+const resetControlValues = (
+  control: FormControl,
+  setFieldValue: (field: string, value: any) => void,
+  parentPath: string
+) => {
+  if (!control) return;
+
+  if (control.type === 'checkbox-group') {
+    control.options?.forEach((option, index) => {
+      setFieldValue(`${parentPath}.${control.controlName}[${index}].checked`, false);
+      if (option.type === 'input') {
+        setFieldValue(`${parentPath}.${control.controlName}[${index}].input`, '');
+      }
+      option.children?.forEach(child => {
+        if (child) resetControlValues(child, setFieldValue, `${parentPath}.${control.controlName}[${index}]`);
+      });
+    });
+  } else if (control.type === 'checkbox-input') {
+    setFieldValue(`${parentPath}.${control.controlName}.isChecked`, false);
+    setFieldValue(`${parentPath}.${control.controlName}.inputText`, '');
+  } else if (control.type === 'input') {
+    setFieldValue(`${parentPath}.${control.controlName}`, '');
+  } else if (control.type === 'radio-group') {
+    setFieldValue(`${parentPath}.${control.controlName}.selected`, '');
+    control.options?.forEach(option => {
+      if (option.type === 'input' && option.controlName) {
+        setFieldValue(`${parentPath}.${control.controlName}.inputs.${option.controlName}`, '');
+      }
+    });
+  }
+};
+
 const DynamicForm: React.FC<DynamicFormProps> = ({ formConfig }) => {
   const [isPreview, setIsPreview] = useState(false);
   const [formValues, setFormValues] = useState<Record<string, any> | null>(null);

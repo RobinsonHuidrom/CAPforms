@@ -4,6 +4,7 @@ const form3Config: FormConfig = {
   name: "Phyllodes Tumor Synoptic Report",
   formId: 3,
   controls: [
+    // SPECIMEN
     {
       type: "checkbox-group",
       controlName: "procedure",
@@ -55,6 +56,8 @@ const form3Config: FormConfig = {
         }
       ]
     },
+
+    // TUMOR SITE
     {
       type: "checkbox-group",
       controlName: "tumorSite",
@@ -185,6 +188,8 @@ const form3Config: FormConfig = {
         }
       ]
     },
+
+    // TUMOR SIZE
     {
       type: "checkbox-group",
       controlName: "dimension",
@@ -219,6 +224,8 @@ const form3Config: FormConfig = {
         }
       ]
     },
+
+    // HISTOLOGIC TYPE
     {
       type: "checkbox-group",
       controlName: "histologicType",
@@ -241,6 +248,8 @@ const form3Config: FormConfig = {
         }
       ]
     },
+
+    // STROMAL CELLULARITY
     {
       type: "checkbox-group",
       controlName: "stromalCellularity",
@@ -263,6 +272,8 @@ const form3Config: FormConfig = {
         }
       ]
     },
+
+    // STROMAL ATYPIA
     {
       type: "checkbox-group",
       controlName: "stromalAtypia",
@@ -290,6 +301,8 @@ const form3Config: FormConfig = {
         }
       ]
     },
+
+    // STROMAL OVERGROWTH
     {
       type: "checkbox-group",
       controlName: "stromalOvergrowth",
@@ -312,6 +325,8 @@ const form3Config: FormConfig = {
         }
       ]
     },
+
+    // MITOTIC RATE
     {
       type: "checkbox-group",
       controlName: "mitoticRate",
@@ -331,6 +346,8 @@ const form3Config: FormConfig = {
         }
       ]
     },
+
+    // HISTOLOGIC TUMOR BORDER
     {
       type: "checkbox-group",
       controlName: "tumorBorder",
@@ -372,6 +389,8 @@ const form3Config: FormConfig = {
         }
       ]
     },
+
+    // MALIGNANT HETEROLOGOUS ELEMENTS
     {
       type: "checkbox-group",
       controlName: "heterologousElements",
@@ -406,6 +425,8 @@ const form3Config: FormConfig = {
         }
       ]
     },
+
+    // MARGIN STATUS
     {
       type: "checkbox-group",
       controlName: "phyllodesTumorStatus",
@@ -528,24 +549,39 @@ const form3Config: FormConfig = {
               ]
             }
           ]
-        }
+        },
+        {
+          label: "Other (Specify)",
+          type: "input",
+          value: " ",
+          controlName: "OS",
+        },
+        {
+          label: "Cannot be determind (explain)",
+          type: "input",
+          value: " ",
+          controlName: "CD",
+        },
       ]
     },
     {
       label: "Margin Comment",
-      type: "checkbox-input",
+      type: "input",
       controlName: "MarginComment",
       inputLabel: "Comment here",
     },
+
+    // REGIONAL LYMPH NODES
     {
       type: "checkbox-group",
       controlName: "regionalLymphNodeStatus",
-      label: "Regional Lymph Nodes",
+      label: "REGIONAL LYMPH NODES",
       options: [
         {
           label: "Not applicable (no regional lymph nodes submitted or found)",
           value: "notApplicable",
           controlName: "notApplicable",
+          children: []
         },
         {
           label: "Regional lymph nodes present",
@@ -573,18 +609,18 @@ const form3Config: FormConfig = {
                       label: "Number of Lymph Nodes with Tumor",
                       options: [
                         {
-                          label: "Exact number (specify)",
+                          label: " Exact number (specify) ",
                           value: "exact",
                           type: "input",
                           controlName: "exactNumber",
-                          inputLabel: "Enter number",
+                          inputLabel: "Enter distance (in cm)",
                         },
                         {
-                          label: "At least (specify):",
+                          label: " At least (specify): ",
                           value: "atLeast",
                           type: "input",
                           controlName: "atLeastSpecify",
-                          inputLabel: "Enter number",
+                          inputLabel: "Enter distance (in cm)",
                         },
                         {
                           label: "Other (specify)",
@@ -603,7 +639,63 @@ const form3Config: FormConfig = {
                       ]
                     }
                   ]
-                }
+                },
+                {
+                  label: "Other (specify)",
+                  value: "otherSpecify",
+                  type: "input",
+                  controlName: "others",
+                  inputLabel: "Please specify",
+                },
+                {
+                  label: "Cannot be determined (explain)",
+                  value: "cannotDetermine",
+                  type: "input",
+                  controlName: "cannotDetermine",
+                  inputLabel: "Please explain",
+                },
+                {
+                  label: "Number of Lymph Nodes Examined",
+                  value: "lymphNodesExamined",
+                  controlName: "lymphNodesExamined",
+                  children: [
+                    {
+                      type: "checkbox-group",
+                      controlName: "lymphNodes",
+                      label: "",
+                      options: [
+                        {
+                          label: " Exact number (specify) ",
+                          value: "exact",
+                          type: "input",
+                          controlName: "exactNumber",
+                          inputLabel: "Enter distance (in cm)",
+                        },
+                        {
+                          label: " At least (specify) ",
+                          value: "atLeast",
+                          type: "input",
+                          controlName: "atLeastSpecify",
+                          inputLabel: "Enter distance (in cm)",
+                        },
+                        {
+                          label: "Other (specify)",
+                          value: "otherSpecify",
+                          type: "input",
+                          controlName: "others",
+                          inputLabel: "Please specify",
+                        },
+                        {
+                          label: "Cannot be determined (explain) ",
+                          value: "cannotDetermine",
+                          type: "input",
+                          controlName: "cannotDetermine",
+                          inputLabel: "Please explain",
+                        },
+                      ]
+                    }
+                  ]
+                },
               ]
             }
           ]
@@ -616,6 +708,8 @@ const form3Config: FormConfig = {
       controlName: "LymphNodeComment",
       inputLabel: "Please explain",
     },
+
+    // DISTANT METASTASIS
     {
       type: "checkbox-group",
       controlName: "distantMetastasis",
@@ -642,6 +736,8 @@ const form3Config: FormConfig = {
         },
       ]
     },
+
+    // PATHOLOGIC STAGE
     {
       type: "checkbox-group",
       controlName: "pathologicStage",
@@ -769,6 +865,8 @@ const form3Config: FormConfig = {
         }
       ]
     },
+
+    // ADDITIONAL FINDINGS
     {
       type: "checkbox-group",
       controlName: "additionalFindings",
@@ -798,6 +896,8 @@ const form3Config: FormConfig = {
         },
       ]
     },
+
+    // COMMENTS
     {
       type: "input",
       controlName: "comments",

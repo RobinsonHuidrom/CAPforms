@@ -22,3 +22,9 @@ export interface FormConfig {
   formId: number;
   controls: FormControl[];
 }
+
+export interface FilteredOption {
+  label?: string;
+  input?: string;
+  children?: Record<string, any>;
+}
