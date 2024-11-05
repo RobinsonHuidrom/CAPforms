@@ -29,14 +29,18 @@ const DynamicForm: React.FC<DynamicFormProps> = ({ formConfig }) => {
   const [formValues, setFormValues] = useState<Record<string, any> | null>(null);
 
   const initializeControlValues = (control: FormControl, acc: Record<string, any>): void => {
+    if (!control) return;
+
     if (control.type === 'checkbox-group') {
       acc[control.controlName] = control.options?.map(option => {
         const optionValue = { checked: false, input: '' };
         if (option.children) {
-          option.children.forEach(child => initializeControlValues(child, optionValue));
+          option.children.forEach(child => {
+            if (child) initializeControlValues(child, optionValue);
+          });
         }
         return optionValue;
-      });
+      }) || [];
     } else if (control.type === 'checkbox-input') {
       acc[control.controlName] = { isChecked: false, inputText: '' };
     } else if (control.type === 'input') {
@@ -53,43 +57,14 @@ const DynamicForm: React.FC<DynamicFormProps> = ({ formConfig }) => {
     }
   };
 
-  const resetControlValues = (
-    control: FormControl,
-    setFieldValue: (field: string, value: any) => void,
-    parentControlName = ''
-  ): void => {
-    const controlName = parentControlName ? `${parentControlName}.${control.controlName}` : control.controlName;
-
-    if (control.type === 'checkbox-group') {
-      control.options?.forEach((option, index) => {
-        setFieldValue(`${controlName}[${index}].checked`, false);
-        setFieldValue(`${controlName}[${index}].input`, '');
-        if (option.children) {
-          option.children.forEach(child => resetControlValues(child, setFieldValue, `${controlName}[${index}]`));
-        }
-      });
-    } else if (control.type === 'checkbox-input') {
-      setFieldValue(`${controlName}.isChecked`, false);
-      setFieldValue(`${controlName}.inputText`, '');
-    } else if (control.type === 'input') {
-      setFieldValue(controlName, '');
-    } else if (control.type === 'radio-group') {
-      setFieldValue(`${controlName}.selected`, '');
-      control.options?.forEach(option => {
-        if (option.type === 'input') {
-          setFieldValue(`${controlName}.inputs.${option.controlName}`, '');
-        }
+  const initialValues = useMemo(() => {
+    const acc: Record<string, any> = {};
+    if (formConfig && formConfig.controls) {
+      formConfig.controls.forEach(control => {
+        if (control) initializeControlValues(control, acc);
       });
     }
-  };
-
-  const initialValues = useMemo(() => {
-    return formConfig.steps.reduce((acc: Record<string, any>, step) => {
-      step.controls.forEach(control => {
-        initializeControlValues(control, acc);
-      });
-      return acc;
-    }, {});
+    return acc;
   }, [formConfig]);
 
   const validationSchema = Yup.object().shape({});
@@ -101,6 +76,8 @@ const DynamicForm: React.FC<DynamicFormProps> = ({ formConfig }) => {
       const result: Record<string, any> = {};
 
       controls.forEach(control => {
+        if (!control) return;
+
         if (control.type === 'checkbox-group') {
           const selectedOptions = data[control.controlName]
             .map((option: any, index: number) => {
@@ -148,12 +125,12 @@ const DynamicForm: React.FC<DynamicFormProps> = ({ formConfig }) => {
       return result;
     };
 
-    formConfig.steps.forEach((step, stepIndex) => {
-      const filteredStepData = recursiveFilter(values, step.controls);
-      if (Object.keys(filteredStepData).length > 0) {
-        filteredData[`${stepIndex + 1}. ${step.heading}`] = filteredStepData;
+    if (formConfig && formConfig.controls) {
+      const filteredFormData = recursiveFilter(values, formConfig.controls);
+      if (Object.keys(filteredFormData).length > 0) {
+        filteredData[formConfig.name] = filteredFormData;
       }
-    });
+    }
 
     return filteredData;
   };
@@ -192,6 +169,8 @@ const DynamicForm: React.FC<DynamicFormProps> = ({ formConfig }) => {
     level = 0,
     parentChecked = true
   ) => {
+    if (!control) return null;
+
     const controlName = parentControlName ? `${parentControlName}.${control.controlName}` : control.controlName;
     const paddingLeft = level > 0 ? `${level * 20}px` : '0px';
     const isDisabled = !parentChecked;
@@ -215,9 +194,9 @@ const DynamicForm: React.FC<DynamicFormProps> = ({ formConfig }) => {
                           const isChecked = e.target.checked;
                           setFieldValue(`${controlName}[${index}].checked`, isChecked);
                           if (!isChecked) {
-                            option.children?.forEach(child => 
-                              resetControlValues(child, setFieldValue, `${controlName}[${index}]`)
-                            );
+                            option.children?.forEach(child => {
+                              if (child) resetControlValues(child, setFieldValue, `${controlName}[${index}]`);
+                            });
                             if (option.type === 'input') {
                               setFieldValue(`${controlName}[${index}].input`, '');
                             }
@@ -239,16 +218,19 @@ const DynamicForm: React.FC<DynamicFormProps> = ({ formConfig }) => {
                     )}
                     {option.children && option.children.length > 0 && (
                       <div className="ml-6 mt-2">
-                        {option.children.map(child => 
-                          renderControl(
-                            child,
-                            values[control.controlName][index],
-                            setFieldValue,
-                            `${controlName}[${index}]`,
-                            level + 1,
-                            values[control.controlName][index].checked
-                          )
-                        )}
+                        {option.children.map(child => {
+                          if (child) {
+                            return renderControl(
+                              child,
+                              values[control.controlName][index],
+                              setFieldValue,
+                              `${controlName}[${index}]`,
+                              level + 1,
+                              values[control.controlName][index].checked
+                            );
+                          }
+                          return null;
+                        })}
                       </div>
                     )}
                   </div>
@@ -348,6 +330,10 @@ const DynamicForm: React.FC<DynamicFormProps> = ({ formConfig }) => {
     return null;
   };
 
+  if (!formConfig || !formConfig.controls) {
+    return <div>No form configuration available</div>;
+  }
+
   return (
     <Formik
       initialValues={initialValues}
@@ -357,12 +343,7 @@ const DynamicForm: React.FC<DynamicFormProps> = ({ formConfig }) => {
       {({ values, setFieldValue }) => (
         !isPreview ? (
           <Form className="space-y-4">
-            {formConfig.steps.map((step, stepIndex) => (
-              <div key={stepIndex} className="border-b-2 pb-4 mb-4">
-                <h2 className="text-lg font-medium text-gray-900">{`${stepIndex + 1}. ${step.heading}`}</h2>
-                {step.controls.map(control => renderControl(control, values, setFieldValue))}
-              </div>
-            ))}
+            {formConfig.controls.map(control => renderControl(control, values, setFieldValue))}
             <button
               type="submit"
               className="mt-2 w-full inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"

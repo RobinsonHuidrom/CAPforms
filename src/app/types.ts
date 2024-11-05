@@ -17,19 +17,8 @@ export interface FormControl {
   level?: string;
 }
 
-export interface FormStepConfig {
-  heading: string;
-  controls: FormControl[];
-}
-
 export interface FormConfig {
   name: string;
   formId: number;
-  steps: FormStepConfig[];
-}
-
-export interface FilteredOption {
-  label?: string;
-  input: string;
-  children?: Record<string, any>;
+  controls: FormControl[];
 }
