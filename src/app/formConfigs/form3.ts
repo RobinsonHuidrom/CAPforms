@@ -4,7 +4,8 @@ const form3Config: FormConfig = {
   name: "Phyllodes Tumor Synoptic Report",
   formId: 3,
   controls: [
-    // SPECIMEN
+
+    // SPECIMEN  - heading in Json structure 
     {
       type: "checkbox-group",
       controlName: "procedure",
@@ -57,7 +58,8 @@ const form3Config: FormConfig = {
       ]
     },
 
-    // TUMOR SITE
+    // TUMOR - heading
+
     {
       type: "checkbox-group",
       controlName: "tumorSite",
@@ -189,7 +191,6 @@ const form3Config: FormConfig = {
       ]
     },
 
-    // TUMOR SIZE
     {
       type: "checkbox-group",
       controlName: "dimension",
@@ -225,7 +226,7 @@ const form3Config: FormConfig = {
       ]
     },
 
-    // HISTOLOGIC TYPE
+
     {
       type: "checkbox-group",
       controlName: "histologicType",
@@ -249,7 +250,7 @@ const form3Config: FormConfig = {
       ]
     },
 
-    // STROMAL CELLULARITY
+    
     {
       type: "checkbox-group",
       controlName: "stromalCellularity",
@@ -273,7 +274,7 @@ const form3Config: FormConfig = {
       ]
     },
 
-    // STROMAL ATYPIA
+    
     {
       type: "checkbox-group",
       controlName: "stromalAtypia",
@@ -302,7 +303,7 @@ const form3Config: FormConfig = {
       ]
     },
 
-    // STROMAL OVERGROWTH
+    
     {
       type: "checkbox-group",
       controlName: "stromalOvergrowth",
@@ -326,7 +327,7 @@ const form3Config: FormConfig = {
       ]
     },
 
-    // MITOTIC RATE
+    
     {
       type: "checkbox-group",
       controlName: "mitoticRate",
@@ -347,7 +348,7 @@ const form3Config: FormConfig = {
       ]
     },
 
-    // HISTOLOGIC TUMOR BORDER
+    
     {
       type: "checkbox-group",
       controlName: "tumorBorder",
@@ -390,7 +391,7 @@ const form3Config: FormConfig = {
       ]
     },
 
-    // MALIGNANT HETEROLOGOUS ELEMENTS
+    
     {
       type: "checkbox-group",
       controlName: "heterologousElements",
@@ -426,7 +427,7 @@ const form3Config: FormConfig = {
       ]
     },
 
-    // MARGIN STATUS
+    // MARGIN - heading
     {
       type: "checkbox-group",
       controlName: "phyllodesTumorStatus",
@@ -571,7 +572,7 @@ const form3Config: FormConfig = {
       inputLabel: "Comment here",
     },
 
-    // REGIONAL LYMPH NODES
+    // REGIONAL LYMPH NODES  - heading 
     {
       type: "checkbox-group",
       controlName: "regionalLymphNodeStatus",
@@ -709,7 +710,7 @@ const form3Config: FormConfig = {
       inputLabel: "Please explain",
     },
 
-    // DISTANT METASTASIS
+    // DISTANT METASTASIS  - heading 
     {
       type: "checkbox-group",
       controlName: "distantMetastasis",
@@ -737,7 +738,7 @@ const form3Config: FormConfig = {
       ]
     },
 
-    // PATHOLOGIC STAGE
+    // PATHOLOGIC STAGE  - heading 
     {
       type: "checkbox-group",
       controlName: "pathologicStage",
@@ -866,7 +867,7 @@ const form3Config: FormConfig = {
       ]
     },
 
-    // ADDITIONAL FINDINGS
+    // ADDITIONAL FINDINGS  -  Heading 
     {
       type: "checkbox-group",
       controlName: "additionalFindings",
@@ -897,12 +898,12 @@ const form3Config: FormConfig = {
       ]
     },
 
-    // COMMENTS
+    // COMMENTS - Heading
     {
       type: "input",
       controlName: "comments",
       label: "Comment(s):",
-      inputLabel: "Enter comments"
+      inputLabel: "Enter comments",
     }
   ]
 };
