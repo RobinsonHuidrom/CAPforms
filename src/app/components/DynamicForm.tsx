@@ -7,7 +7,7 @@ import React, { useState, useMemo } from 'react';
 import { FieldArray, Field, Formik, Form } from 'formik';
 import * as Yup from 'yup';
 import FormPreview from './FormPreview';
-import { FormConfig, FormSection, FormControl, FormOption, FilteredOption } from '../types';
+import { FormConfig, FormControl, FilteredOption } from '../types';
 
 interface DynamicFormProps {
   formConfig: FormConfig;

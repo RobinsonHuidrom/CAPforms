@@ -573,7 +573,7 @@ const form3Config: FormConfig = {
         {
           type: "checkbox-group",
           controlName: "regionalLymphNodeStatus",
-          label: "REGIONAL LYMPH NODES",
+          label: " ",
           options: [
             {
               label: "Not applicable (no regional lymph nodes submitted or found)",
@@ -911,7 +911,7 @@ const form3Config: FormConfig = {
         {
           type: "input",
           controlName: "comments",
-          label: "Comment(s):",
+          label: " ",
           inputLabel: "Enter comments",
         }
       ]

@@ -15,7 +15,7 @@ const FormPreview: React.FC<FormPreviewProps> = ({ formValues, onEdit, onSubmit 
         {Object.entries(data).map(([key, value]) => {
           if (Array.isArray(value)) {
             return (
-              <li key={key} className="mb-2">
+              <li key={key} className="mb-2 section-gap">
                 <strong className="text-gray-700">{key}</strong>
                 <ul className="list-disc ml-4">
                   {value.map((item, index) => (
@@ -31,7 +31,7 @@ const FormPreview: React.FC<FormPreviewProps> = ({ formValues, onEdit, onSubmit 
           } else if (typeof value === 'object' && value !== null) {
             return (
               <li key={key} className="mb-2">
-                <strong className="text-gray-700">{key}</strong>
+                <strong className="text-Black-700">{key}</strong>
                 {renderNestedData(value, level + 1)}
               </li>
             );
@@ -40,7 +40,7 @@ const FormPreview: React.FC<FormPreviewProps> = ({ formValues, onEdit, onSubmit 
             const reactValue = typeof value === 'string' || typeof value === 'number' ? value : null;
             return (
               <li key={key} className="mb-1">
-                <strong className="text-gray-700">{key}:</strong> {reactValue}
+                <strong className="text-blue-700">{key}:</strong> {reactValue}
               </li>
             );
           }
@@ -51,7 +51,7 @@ const FormPreview: React.FC<FormPreviewProps> = ({ formValues, onEdit, onSubmit 
 
   return (
     <div className="space-y-4">
-      <h2 className="text-lg font-medium text-gray-900">Preview</h2>
+      <h2 className="text-lg font-medium text-black-900">Preview</h2>
       <div className="bg-gray-100 p-4 rounded overflow-auto">
         {renderNestedData(formValues)}
       </div>
