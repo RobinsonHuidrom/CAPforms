@@ -1,8 +1,13 @@
+
+
+// DynamicForm.tsx
+
+
 import React, { useState, useMemo } from 'react';
 import { FieldArray, Field, Formik, Form } from 'formik';
 import * as Yup from 'yup';
 import FormPreview from './FormPreview';
-import { FormConfig, FormControl, FormOption, FilteredOption } from '../types';
+import { FormConfig, FormSection, FormControl, FormOption, FilteredOption } from '../types';
 
 interface DynamicFormProps {
   formConfig: FormConfig;
@@ -91,9 +96,11 @@ const DynamicForm: React.FC<DynamicFormProps> = ({ formConfig }) => {
 
   const initialValues = useMemo(() => {
     const acc: Record<string, any> = {};
-    if (formConfig && formConfig.controls) {
-      formConfig.controls.forEach(control => {
-        if (control) initializeControlValues(control, acc);
+    if (formConfig && formConfig.sections) {
+      formConfig.sections.forEach(section => {
+        section.controls.forEach(control => {
+          if (control) initializeControlValues(control, acc);
+        });
       });
     }
     return acc;
@@ -157,11 +164,13 @@ const DynamicForm: React.FC<DynamicFormProps> = ({ formConfig }) => {
       return result;
     };
 
-    if (formConfig && formConfig.controls) {
-      const filteredFormData = recursiveFilter(values, formConfig.controls);
-      if (Object.keys(filteredFormData).length > 0) {
-        filteredData[formConfig.name] = filteredFormData;
-      }
+    if (formConfig && formConfig.sections) {
+      formConfig.sections.forEach(section => {
+        const filteredSectionData = recursiveFilter(values, section.controls);
+        if (Object.keys(filteredSectionData).length > 0) {
+          filteredData[section.sectionName] = filteredSectionData;
+        }
+      });
     }
 
     return filteredData;
@@ -362,7 +371,7 @@ const DynamicForm: React.FC<DynamicFormProps> = ({ formConfig }) => {
     return null;
   };
 
-  if (!formConfig || !formConfig.controls) {
+  if (!formConfig || !formConfig.sections) {
     return <div>No form configuration available</div>;
   }
 
@@ -375,7 +384,12 @@ const DynamicForm: React.FC<DynamicFormProps> = ({ formConfig }) => {
       {({ values, setFieldValue }) => (
         !isPreview ? (
           <Form className="space-y-4">
-            {formConfig.controls.map(control => renderControl(control, values, setFieldValue))}
+            {formConfig.sections.map(section => (
+              <div key={section.sectionName} className="mb-8">
+                <h2 className="text-lg font-semibold mb-4">{section.sectionName}</h2>
+                {section.controls.map(control => renderControl(control, values, setFieldValue))}
+              </div>
+            ))}
             <button
               type="submit"
               className="mt-2 w-full inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"

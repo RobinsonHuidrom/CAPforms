@@ -15,11 +15,11 @@ const FormPreview: React.FC<FormPreviewProps> = ({ formValues, onEdit, onSubmit 
         {Object.entries(data).map(([key, value]) => {
           if (Array.isArray(value)) {
             return (
-              <li key={key}>
-                <strong>{key}</strong>
-                <ul>
+              <li key={key} className="mb-2">
+                <strong className="text-gray-700">{key}</strong>
+                <ul className="list-disc ml-4">
                   {value.map((item, index) => (
-                    <li key={index} style={{ paddingLeft }}>
+                    <li key={index} className="mb-1">
                       {item.label}
                       {item.input && `: ${item.input}`}
                       {item.children && renderNestedData(item.children, level + 1)}
@@ -30,13 +30,20 @@ const FormPreview: React.FC<FormPreviewProps> = ({ formValues, onEdit, onSubmit 
             );
           } else if (typeof value === 'object' && value !== null) {
             return (
-              <li key={key}>
-                <strong>{key}</strong>
+              <li key={key} className="mb-2">
+                <strong className="text-gray-700">{key}</strong>
                 {renderNestedData(value, level + 1)}
               </li>
             );
+          } else {
+            // Ensure value is a valid ReactNode
+            const reactValue = typeof value === 'string' || typeof value === 'number' ? value : null;
+            return (
+              <li key={key} className="mb-1">
+                <strong className="text-gray-700">{key}:</strong> {reactValue}
+              </li>
+            );
           }
-          return null;
         })}
       </ul>
     );

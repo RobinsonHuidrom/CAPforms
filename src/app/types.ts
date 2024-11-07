@@ -1,3 +1,6 @@
+
+// types.ts 
+
 export interface FormOption {
   label: string;
   value: string;
@@ -17,10 +20,15 @@ export interface FormControl {
   level?: string;
 }
 
+export interface FormSection {
+  sectionName: string;
+  controls: FormControl[];
+}
+
 export interface FormConfig {
   name: string;
   formId: number;
-  controls: FormControl[];
+  sections: FormSection[];
 }
 
 export interface FilteredOption {
