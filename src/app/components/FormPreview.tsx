@@ -1,3 +1,5 @@
+
+
 import React from 'react';
 
 interface FormPreviewProps {
@@ -30,7 +32,7 @@ const FormPreview: React.FC<FormPreviewProps> = ({ formValues, onEdit, onSubmit 
             );
           } else if (typeof value === 'object' && value !== null) {
             return (
-              <li key={key} className="mb-2">
+              <li key={key} className="mb-2 section-gap">
                 <strong className="text-Black-700">{key}</strong>
                 {renderNestedData(value, level + 1)}
               </li>
@@ -40,7 +42,7 @@ const FormPreview: React.FC<FormPreviewProps> = ({ formValues, onEdit, onSubmit 
             const reactValue = typeof value === 'string' || typeof value === 'number' ? value : null;
             return (
               <li key={key} className="mb-1">
-                <strong className="text-blue-700">{key}:</strong> {reactValue}
+                <strong className="text-blue-700"></strong> {reactValue}
               </li>
             );
           }
